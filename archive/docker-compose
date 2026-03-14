@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  oracle:
+    image: container-registry.oracle.com/database/enterprise:latest
+    environment:
+      - ORACLE_PWD=oracle
+
+  ontology_service:
+    build: .
+    depends_on:
+      - oracle
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+
+  vector_service:
+    build: .
+    depends_on:
+      - oracle
+    env_file:
+      - .env
+    ports:
+      - "8001:8000"
+    command: ["uvicorn", "compare_app.main:app", "--host", "0.0.0.0", "--port", "8000"]

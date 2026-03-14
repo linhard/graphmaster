@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+neo4j
+pydantic
+python-dotenv
+
+spacy
+sentence-transformers
+
+faiss-cpu
+
+graphql-core
+strawberry-graphql
+
+psycopg2-binary

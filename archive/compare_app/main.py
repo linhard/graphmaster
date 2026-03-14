@@ -1,0 +1,1 @@
+uvicorn compare_app.main:app --reload --port 8001
