@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+PROJECT_DIR="/opt/graphmaster"
+
+START_SCRIPT="$PROJECT_DIR/start_graphmaster.sh"
+STOP_SCRIPT="$PROJECT_DIR/stop_graphmaster.sh"
+DEPLOY_SCRIPT="$PROJECT_DIR/deploy_git.sh"
+DIAG_SCRIPT="$PROJECT_DIR/git_diagnose.sh"
+
+COMMAND=$1
+
+echo "======================================"
+echo " Graphmaster Control"
+echo "======================================"
+
+case "$COMMAND" in
+
+start)
+    echo "Starting Graphmaster..."
+    bash $START_SCRIPT
+    ;;
+
+stop)
+    echo "Stopping Graphmaster..."
+    bash $STOP_SCRIPT
+    ;;
+
+restart)
+    echo "Restarting Graphmaster..."
+    bash $STOP_SCRIPT
+    sleep 2
+    bash $START_SCRIPT
+    ;;
+
+status)
+
+    echo ""
+    echo "System Status"
+    echo "-------------"
+
+    echo ""
+    echo "Neo4j:"
+    ss -lntp | grep 7687 || echo "Neo4j not running"
+
+    echo ""
+    echo "PostgreSQL:"
+    ss -lntp | grep 5432 || echo "PostgreSQL not running"
+
+    echo ""
+    echo "FastAPI:"
+    ss -lntp | grep 8000 || echo "FastAPI not running"
+
+    echo ""
+    echo "Logs:"
+    echo "/opt/graphmaster/logs/fastapi.log"
+    ;;
+
+deploy)
+    echo "Deploying to GitHub..."
+    bash $DEPLOY_SCRIPT
+    ;;
+
+diagnose)
+    echo "Running Git diagnostics..."
+    bash $DIAG_SCRIPT
+    ;;
+
+*)
+    echo ""
+    echo "Usage:"
+    echo ""
+    echo "./graphmaster start"
+    echo "./graphmaster stop"
+    echo "./graphmaster restart"
+    echo "./graphmaster status"
+    echo "./graphmaster deploy"
+    echo "./graphmaster diagnose"
+    echo ""
+    ;;
+
+esac
